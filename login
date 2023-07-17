@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login Page</title>
+  <title>Login Form with Particle.js Background</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
   <style>
     body {
@@ -64,6 +64,11 @@
       cursor: pointer;
     }
 
+    .form-group input[type="submit"].loading {
+      background-color: #ff6600;
+      cursor: not-allowed;
+    }
+
     .form-group input[type="submit"]:hover {
       background-color: #ff6600;
     }
@@ -85,7 +90,7 @@
       <div class="col-md-6 offset-md-3">
         <div class="login-container">
           <h2>Login</h2>
-          <form>
+          <form id="login-form">
             <div class="form-group">
               <label for="username">Username</label>
               <input type="text" id="username" placeholder="Enter your username">
@@ -95,7 +100,7 @@
               <input type="password" id="password" placeholder="Enter your password">
             </div>
             <div class="form-group">
-              <input type="submit" value="Login">
+              <input type="submit" value="Login" id="login-button">
             </div>
             <div class="form-group text-center">
               <a href="#">Forgot password?</a>
@@ -107,6 +112,7 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script>
     particlesJS("particle-container", {
       particles: {
@@ -218,75 +224,34 @@
       },
       retina_detect: true
     });
+
+    $(document).ready(function() {
+      const loginForm = $('#login-form');
+      const loginButton = $('#login-button');
+
+      loginForm.on('submit', function(event) {
+        event.preventDefault();
+
+        const username = $('#username').val();
+        const password = $('#password').val();
+
+        if (username && password) {
+          loginButton.prop('disabled', true);
+          loginButton.val('Logging in...');
+
+          // Simulate login request
+          setTimeout(function() {
+            // Perform actual login logic
+            // ...
+
+            // On success, redirect or display success message
+            alert('Login successful');
+          }, 2000);
+        } else {
+          alert('Invalid username or password');
+        }
+      });
+    });
   </script>
 </body>
 </html>
-
-
-@keyframes loading {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.loading-spinner {
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  animation: loading 1s linear infinite;
-  margin-right: 10px;
-  display: inline-block;
-  vertical-align: middle;
-}
-
-.loading-text {
-  display: inline-block;
-  vertical-align: middle;
-}
-
-
-
-const loginButton = document.getElementById('login-button');
-const originalButtonText = loginButton.innerHTML;
-
-function showLoadingState() {
-  loginButton.disabled = true;
-  loginButton.innerHTML = `<span class="loading-spinner"></span><span class="loading-text">Loading...</span>`;
-}
-
-function hideLoadingState() {
-  loginButton.disabled = false;
-  loginButton.innerHTML = originalButtonText;
-}
-
-// Example usage:
-loginButton.addEventListener('click', function() {
-  showLoadingState();
-
-  // Simulate loading delay
-  setTimeout(function() {
-    hideLoadingState();
-  }, 2000);
-});
-
-.animated-text {
-    display: inline-block;
-    overflow: hidden;
-    animation: animateText 5s steps(300) infinite;
-    white-space: nowrap;
-  }
-  
-  @keyframes animateText {
-    from {
-      width: 0;
-    }
-    to {
-      width: 100%;
-    }
-  }
-
