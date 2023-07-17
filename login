@@ -255,3 +255,20 @@
   </script>
 </body>
 </html>
+
+
+
+def get_strings_before_string(strings, search_string):
+    result = []
+    marker_found = False
+    for i, string in enumerate(strings):
+        if search_string in string:
+            marker_found = True
+            break
+        result.append((string, i, i))
+
+    if marker_found:
+        for j in range(i - 1, -1, -1):
+            result.append((strings[j], j, i - j - 1))
+
+    return result[::-1]
