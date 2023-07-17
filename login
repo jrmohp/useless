@@ -9,12 +9,13 @@
       overflow: hidden;
     }
 
-    #particles-js {
+    #particle-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
+      z-index: -1;
     }
 
     .login-container {
@@ -24,7 +25,7 @@
       margin: 0 auto;
       margin-top: 150px;
       padding: 20px;
-      background-color: #fff;
+      background-color: rgba(255, 255, 255, 0.8);
       border-radius: 5px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
@@ -32,6 +33,7 @@
     .login-container h2 {
       text-align: center;
       margin-bottom: 20px;
+      color: #ff8c00;
     }
 
     .form-group {
@@ -55,7 +57,7 @@
       width: 100%;
       padding: 10px;
       font-size: 16px;
-      background-color: #007bff;
+      background-color: #ff8c00;
       color: #fff;
       border: none;
       border-radius: 5px;
@@ -63,7 +65,7 @@
     }
 
     .form-group input[type="submit"]:hover {
-      background-color: #0069d9;
+      background-color: #ff6600;
     }
 
     .form-group .text-center {
@@ -71,13 +73,13 @@
     }
 
     .form-group .text-center a {
-      color: #007bff;
+      color: #ff8c00;
       text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
+  <div id="particle-container"></div>
   <div class="container">
     <div class="row">
       <div class="col-md-6 offset-md-3">
@@ -106,7 +108,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
   <script>
-    particlesJS("particles-js", {
+    particlesJS("particle-container", {
       particles: {
         number: {
           value: 80,
@@ -116,7 +118,7 @@
           }
         },
         color: {
-          value: "#000"
+          value: "#ff8c00"
         },
         shape: {
           type: "circle",
@@ -156,7 +158,7 @@
         line_linked: {
           enable: true,
           distance: 150,
-          color: "#000",
+          color: "#ff8c00",
           opacity: 0.4,
           width: 1
         },
