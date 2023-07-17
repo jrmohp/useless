@@ -221,3 +221,56 @@
   </script>
 </body>
 </html>
+
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: loading 1s linear infinite;
+  margin-right: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.loading-text {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+
+
+const loginButton = document.getElementById('login-button');
+const originalButtonText = loginButton.innerHTML;
+
+function showLoadingState() {
+  loginButton.disabled = true;
+  loginButton.innerHTML = `<span class="loading-spinner"></span><span class="loading-text">Loading...</span>`;
+}
+
+function hideLoadingState() {
+  loginButton.disabled = false;
+  loginButton.innerHTML = originalButtonText;
+}
+
+// Example usage:
+loginButton.addEventListener('click', function() {
+  showLoadingState();
+
+  // Simulate loading delay
+  setTimeout(function() {
+    hideLoadingState();
+  }, 2000);
+});
+
