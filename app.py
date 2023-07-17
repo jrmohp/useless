@@ -83,6 +83,12 @@ def process_pdf():
 
     return text, 200
 
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    response = make_response(redirect('/'))
+    response.set_cookie('session_id', '', expires=0)  # Clear session ID cookie
+    return response
 
 
 
