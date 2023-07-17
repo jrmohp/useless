@@ -92,3 +92,48 @@ def logout():
 
 
 
+@app.route('/process_marker', methods=['POST'])
+def process_marker():
+    marker = request.form['marker']
+
+    if 'text_data' not in session:
+        return jsonify({'error': 'No text data stored in session. Upload a file first.'}), 400
+
+    text_data = session['text_data']
+    lines = text_data.split('\n')
+
+    result = find_lines_around_marker(lines, marker)
+
+    if 'error' in result:
+        return jsonify(result), 404
+
+    return jsonify(result)
+
+
+
+def find_lines_around_marker(lines, marker):
+    result = {'marker': marker, 'lines': []}
+    line_index = None
+
+    for i, line in enumerate(lines):
+        if marker in line:
+            line_index = i
+            break
+
+    if line_index is None:
+        result['error'] = f"Marker '{marker}' not found in the text data."
+    else:
+        start = max(0, line_index - 5)
+        end = min(len(lines), line_index + 6)
+
+        if start > line_index:
+            start = line_index
+        if end <= line_index + 1:
+            end = min(line_index + 2, len(lines))
+
+        result['lines'] = lines[start:end]
+
+    return result
+
+
+
