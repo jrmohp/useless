@@ -131,7 +131,9 @@ def find_lines_around_marker(lines, marker):
         if end <= line_index + 1:
             end = min(line_index + 2, len(lines))
 
-        result['lines'] = lines[start:end]
+        for i, line in enumerate(lines[start:end]):
+            relative_index = i - (line_index - start)
+            result['lines'].append({'line': line, 'relative_index': relative_index})
 
     return result
 
