@@ -274,3 +274,19 @@ loginButton.addEventListener('click', function() {
   }, 2000);
 });
 
+.animated-text {
+    display: inline-block;
+    overflow: hidden;
+    animation: animateText 5s steps(300) infinite;
+    white-space: nowrap;
+  }
+  
+  @keyframes animateText {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
