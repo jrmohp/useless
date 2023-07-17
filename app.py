@@ -139,3 +139,38 @@ def find_lines_around_marker(lines, marker):
 
 
 
+
+@app.route('/split_segments', methods=['POST'])
+def split_segments():
+    if 'text_data' not in session:
+        return jsonify({'error': 'No text data stored in session. Upload a file first.'}), 400
+
+    text_data = session['text_data']
+    lines = text_data.split('\n')
+
+    marker_line = request.form.get('marker_line')
+    marker_relative_index = int(request.form.get('marker_relative_index'))
+
+    segments = split_text_segments(lines, marker_line, marker_relative_index)
+
+    return jsonify({'segments': segments})
+
+
+def split_text_segments(lines, marker_line, marker_relative_index):
+    segments = []
+    current_segment = []
+
+    for i, line in enumerate(lines):
+        if line == marker_line and i - marker_relative_index == 0:
+            if current_segment:
+                segments.append(current_segment)
+                current_segment = []
+        current_segment.append(line)
+
+    if current_segment:
+        segments.append(current_segment)
+
+    return segments
+
+
+
