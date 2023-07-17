@@ -161,16 +161,15 @@ def split_text_segments(lines, marker_line, marker_relative_index):
     current_segment = []
 
     for i, line in enumerate(lines):
-        if line == marker_line and i - marker_relative_index == 0:
-            if current_segment:
+        if marker_line in line:
+            relative_index = i - marker_relative_index
+            if relative_index >= 0 and relative_index <= len(current_segment):
                 segments.append(current_segment)
                 current_segment = []
+
         current_segment.append(line)
 
     if current_segment:
         segments.append(current_segment)
 
     return segments
-
-
-
