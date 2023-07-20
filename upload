@@ -102,3 +102,60 @@ if __name__ == "__main__":
     for page_number, text in enumerate(first_30_pages_text, start=1):
         print(f"Page {page_number}:\n{text}\n")
 
+
+from PyPDF2 import PdfReader, PdfWriter
+
+def split_pdf(input_pdf, output_path, num_pages=30):
+    """
+    Split a PDF into separate pages and save each page as an individual PDF.
+
+    Parameters:
+        input_pdf (str): Path to the input PDF file.
+        output_path (str): Path to the output directory where the split PDFs will be saved.
+        num_pages (int): Number of pages to split. Default is 30.
+
+    Returns:
+        list: List of paths to the split PDFs.
+    """
+    # Create the output directory if it doesn't exist
+    os.makedirs(output_path, exist_ok=True)
+
+    # Open the input PDF in read-binary mode
+    pdf_reader = PdfReader(input_pdf)
+
+    # Get the total number of pages in the PDF
+    total_pages = len(pdf_reader.pages)
+
+    # Calculate the number of pages to split (minimum of num_pages and total_pages)
+    num_pages_to_split = min(num_pages, total_pages)
+
+    # Create a list to store the paths of the split PDFs
+    split_pdf_paths = []
+
+    for page_number in range(num_pages_to_split):
+        # Create a new PDF writer
+        pdf_writer = PdfWriter()
+
+        # Add the current page to the PDF writer
+        pdf_writer.add_page(pdf_reader.pages[page_number])
+
+        # Save the individual page as a new PDF in the output directory
+        split_pdf_path = os.path.join(output_path, f"page_{page_number + 1}.pdf")
+        with open(split_pdf_path, 'wb') as output_file:
+            pdf_writer.write(output_file)
+
+        # Add the path of the split PDF to the list
+        split_pdf_paths.append(split_pdf_path)
+
+    return split_pdf_paths
+
+if __name__ == "__main__":
+    input_pdf_file = "path/to/your/input.pdf"
+    output_directory = "path/to/output"
+
+    split_pdfs = split_pdf(input_pdf_file, output_directory)
+    print("PDF Split successfully!")
+    print("Split PDFs:")
+    for pdf_path in split_pdfs:
+        print(pdf_path)
+
