@@ -50,3 +50,55 @@
     </div>
 </body>
 </html>
+
+
+
+
+import subprocess
+
+def read_first_30_pages(input_pdf):
+    """
+    Read the text content of the first 30 pages of a PDF file using mutool.
+
+    Parameters:
+        input_pdf (str): Path to the input PDF file.
+
+    Returns:
+        list: List of text content from the first 30 pages.
+    """
+    pdf_text = []
+    num_pages = min(get_pdf_page_count(input_pdf), 30)
+
+    for page_number in range(1, num_pages + 1):
+        # Use mutool to extract text from the current page
+        process = subprocess.Popen(['mutool', 'draw', '-F', 'text', '-o', '-', input_pdf, str(page_number)], stdout=subprocess.PIPE)
+        text_content, _ = process.communicate()
+        pdf_text.append(text_content.decode('utf-8'))
+
+    return pdf_text
+
+def get_pdf_page_count(input_pdf):
+    """
+    Get the number of pages in the PDF using mutool.
+
+    Parameters:
+        input_pdf (str): Path to the input PDF file.
+
+    Returns:
+        int: Number of pages in the PDF.
+    """
+    process = subprocess.Popen(['mutool', 'info', input_pdf], stdout=subprocess.PIPE)
+    output, _ = process.communicate()
+    lines = output.decode('utf-8').splitlines()
+    for line in lines:
+        if line.startswith('Pages:'):
+            return int(line.split(':', 1)[1].strip())
+
+if __name__ == "__main__":
+    input_pdf_file = "path/to/your/input.pdf"
+
+    first_30_pages_text = read_first_30_pages(input_pdf_file)
+    print("Text content of the first 30 pages:")
+    for page_number, text in enumerate(first_30_pages_text, start=1):
+        print(f"Page {page_number}:\n{text}\n")
+
